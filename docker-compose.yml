@@ -1,0 +1,36 @@
+version: '3'
+services:
+  discord-listener:
+    #image: docker.voidwell.com/cyto/discord-listener
+    env_file:
+      - dev-variables.env
+    depends_on:
+      - discord-worker
+      - manager
+    build:
+      context: ../Cyto.Discord
+      dockerfile: Dockerfile
+    volumes:
+      - ../Cyto.Discord:/
+
+  discord-worker:
+    #image: docker.voidwell.com/cyto/discord-worker
+    env_file:
+      - dev-variables.env
+    depends_on:
+      - manager
+    build:
+      context: ../Cyto.DiscordWorker
+      dockerfile: Dockerfile
+    volumes:
+      - ../Cyto.DiscordWorker:/
+
+  manager:
+    #image: docker.voidwell.com/cyto/manager
+    env_file:
+      - dev-variables.env
+    build:
+      context: ../Cyto.Manager
+      dockerfile: Dockerfile
+    volumes:
+      - ../Cyto.Manager:/
